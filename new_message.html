@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Message</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #d0e7ff; /* light blue background */
+            display: flex; /* centering */
+            align-items: center; /* vertically center the container */
+            justify-content: center; /* horizontally center the container */
+            height: 100vh; /* full height of the viewport */
+            margin: 0; /* remove default margin */
+        }
+        .container {
+            max-width: 600px; /* Set a maximum width for the container */
+            text-align: center; /* Center text in the container */
+            background-color: white; /* White background for the container */
+            padding: 2em; /* Padding around the container */
+            border-radius: 8px; /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a light shadow to the container */
+        }
+        h1 {
+            color: brown; /* Brown heading color */
+        }
+        .form-group label {
+            font-weight: bold; /* Make label text bold */
+            color: black; /* Set label text color to black */
+        }
+        .form-control {
+            color: black; /* Set input text color to black */
+            font-size: 1em; /* Set input text size */
+        }
+        /* Adjust input box size */
+        #username, #country {
+            width: 80%; /* Set input box width to 80% of the container */
+            margin: 0 auto; /* Center the input box */
+        }
+        /* Adjust textarea size */
+        #message {
+            color: black; /* Set textarea text color to black */
+        }
+        .btn-custom {
+            background-color: brown; /* Brown background color for buttons */
+            color: white; /* White text color for buttons */
+            font-weight: bold; /* Make button text bold */
+            padding: 0.5em 1em; /* Padding inside the button */
+            margin-top: 1em; /* Add margin to the top of the button */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Input Your Message</h1>
+        <form action="/newmessage" method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" class="form-control" id="country" name="country" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-custom">Submit</button>   <!-- Submit button -->
+        </form>
+        <a href="/guestbook" class="btn btn-custom">View Guestbook</a>  <!-- View Guestbook button -->
+    </div>
+</body>
+</html>

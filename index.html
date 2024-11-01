@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guestbook</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Set light blue background color for the entire page */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #d0e7ff; /* Light blue background */
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            background-color: white; /* White background for container */
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+        /* Style the header */
+        h1 {
+            color: brown;
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+        /* Style the description */
+        p {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 1.5em;
+        }
+        /* Style the navigation links */
+        .nav-link {
+            font-weight: bold;
+        }
+        /* Social media icons styling */
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons a {
+            margin: 0 15px; /* Space between icons */
+            color: #333; /* Color of icons */
+            font-size: 1.5em; /* Size of icons */
+            text-decoration: none; /* Remove underline */
+        }
+        .social-icons a:hover {
+            color: #007bff; /* Change color on hover */
+        }
+        .free-text {
+            color: brown; /* Same color as the header */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guestbook</h1>
+        <p>Welcome to our Guestbook application! This is a place where you can leave a message to share 
+           your thoughts, greetings, or feedback. Connect with others and read what other visitors have 
+           posted in our public guestbook. Each message helps build a unique sense of community, allowing 
+           everyone to share and connect in one place. Enjoy leaving your mark and exploring the words left 
+           by others! This website is completely <span class="free-text">free of charge</span>.</p>
+        
+        <nav>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/guestbook">Guestbook</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/newmessage">New Message</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ajaxmessage">Forum</a> <!-- Button for AJAX page -->
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+</body>
+</html>

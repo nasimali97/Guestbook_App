@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guestbook Messages</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #d0e7ff; /* Light blue background */
+            display: flex; /* Use flexbox for centering */
+            align-items: center; /* Vertically center the container */
+            justify-content: center; /* Horizontally center the container */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+        }
+        .container {
+            max-width: 800px; /* Set a max width for the container */
+            text-align: center; /* Center text within the container */
+            background-color: white; /* White background for container */
+            padding: 2em; /* Add padding for the container */
+            border-radius: 8px; /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+            margin-top: 20px; /* Add margin to the top */
+        }
+        h1, th {
+            color: brown; /* Set color for heading and table headers */
+        }
+        table {
+            margin: 0 auto; /* Center the table */
+        }
+        .btn-brown {
+            background-color: brown; /* Brown background */
+            color: white; /* White text color */
+        }
+        .btn-brown:hover {
+            background-color: darkred; /* Darker brown on hover */
+            color: white; /* Maintain white text color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Guestbook Messages</h1>
+        <table class="table table-bordered" id="messagesTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be populated here via JavaScript -->
+            </tbody>
+        </table>
+        <a href="/" class="btn btn-brown">Back to Home</a> <!-- Added custom class here -->
+    </div>
+
+    <script>
+        // Fetch messages from the server
+        fetch('/guestbook-data')
+            .then(response => response.json())
+            .then(messages => {
+                const tableBody = document.getElementById('messagesTable').querySelector('tbody');
+                messages.forEach((msg, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${index + 1}</td><td>${msg.username}</td><td>${msg.country}</td><td>${msg.message}</td>`;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching guestbook data:', error));
+    </script>
+</body>
+</html>

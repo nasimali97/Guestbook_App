@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Message</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #d0e7ff; /* Light blue background */
+            display: flex; /* Use flexbox for centering */
+            align-items: center; /* Vertically center the container */
+            justify-content: center; /* Horizontally center the container */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+            overflow-y: auto; /* Allow vertical scrolling */
+        }
+        .container {
+            max-width: 600px; /* Set a max width for the container */
+            text-align: center; /* Center text within the container */
+            background-color: white; /* White background for container */
+            padding: 2em; /* Add padding for the container */
+            border-radius: 8px; /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        }
+        h1 {
+            color: brown; /* Brown color for the header */
+        }
+        .form-group label {
+            font-weight: bold; /* Make label text bold */
+            color: black; /* Set label text color to black */
+        }
+        .form-control {
+            color: black; /* Set input text color to black */
+            font-size: 1em; /* Set input text size */
+        }
+        .btn-custom {
+            background-color: brown; /* Brown background color for buttons */
+            color: white; /* White text color for buttons */
+            font-weight: bold; /* Make button text bold */
+            padding: 0.5em 1em; /* Padding inside the button */
+            margin-top: 10px; /* Margin above the button */
+        }
+        /* Container for messages */
+        #messagesContainer {
+            margin-top: 20px; /* Space above messages */
+            text-align: left; /* Align messages to the left */
+            max-height: 300px; /* Set max height for scrolling */
+            overflow-y: auto; /* Enable scrolling for messages */
+        }
+        .message {
+            padding: 10px; /* Space inside message container */
+            border-bottom: 1px solid #ccc; /* Bottom border for separation */
+        }
+        .message strong {
+            display: block; /* Make username a block element */
+            color: brown; /* Color for username */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guestbook Forum</h1>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" id="country" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea class="form-control" id="message" rows="3" required></textarea>
+        </div>
+        <button id="submitButton" class="btn btn-custom">Submit</button> <!-- Submit button -->
+        
+        <div id="messagesContainer"></div> <!-- Container to display messages -->
+        
+        <!-- Back to Home button -->
+        <a href="/" class="btn btn-custom" style="margin-top: 10px;">Back to Home</a>
+    </div>
+
+    <script>
+        // Array to hold submitted messages temporarily
+        const submittedMessages = [];
+
+        // Handle button click for AJAX submission
+        document.getElementById('submitButton').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const country = document.getElementById('country').value;
+            const message = document.getElementById('message').value;
+
+            // Create a new message object
+            const newMessage = {
+                username: username,
+                country: country,
+                message: message,
+                date: new Date().toLocaleString(), // Format the date
+            };
+
+            // Add new message to the submittedMessages array
+            submittedMessages.push(newMessage);
+
+            // Clear the messages container
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = ''; // Clear previous messages
+
+            // Fetch messages from guestbook.json
+            fetch('/guestbook-data')
+                .then(response => response.json())
+                .then(messages => {
+                    // Combine fetched messages and submitted messages
+                    const allMessages = messages.concat(submittedMessages);
+
+                    // Display all messages in the messagesContainer
+                    allMessages.forEach(msg => {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('message'); // Add class for styling
+                        messageElement.innerHTML = `<strong>${msg.username}</strong> (${msg.country}): ${msg.message} <em>${msg.date}</em>`;
+                        messagesContainer.appendChild(messageElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching messages:', error));
+
+            // Clear input fields after submission
+            document.getElementById('username').value = '';
+            document.getElementById('country').value = '';
+            document.getElementById('message').value = '';
+        });
+    </script>
+</body>
+</html>
