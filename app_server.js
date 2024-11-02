@@ -5,7 +5,7 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 // Middleware to parse URL-encoded data
-app.use(express.urlencoded({ extended: true })); // Middleware to handle form submissions
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Middleware to parse JSON bodies
 
 // Serve static files (if needed)
@@ -33,33 +33,64 @@ app.get('/guestbook-data', function (req, res) {
 
 // Route for new message
 app.get('/newmessage', (req, res) => {
-    res.sendFile(path.join(__dirname, 'new_message.html')); // Ensure this matches the file name
+    res.sendFile(path.join(__dirname, 'new_message.html'));
 });
 
 // Route for AJAX message page
 app.get('/ajaxmessage', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ajax_message.html')); // Serve the new AJAX message page
+    res.sendFile(path.join(__dirname, 'ajax_message.html'));
 });
 
 // Handle form submissions from the new message page
 app.post('/newmessage', (req, res) => {
     const { username, country, message } = req.body;
 
-    // Validate the input fields
     if (!username || !country || !message) {
-        return res.status(400).send('All fields are required.'); // Respond with an error if any field is empty
+        return res.status(400).send('All fields are required.');
     }
 
-    // Function to format date to the desired format
-    function formatDate(date) {
-        return date.toString(); // Convert date to string, which uses the default format
-    }
-
-    // Create a new message object with the formatted date
     const newMessage = {
         username,
         country,
-        date: formatDate(new Date()), // Use the formatDate function
+        date: new Date().toString(),
+        message,
+    };
+
+    fs.readFile(path.join(__dirname, 'guestbook.json'), 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Error reading JSON file.');
+        }
+
+        let messages = [];
+        try {
+            messages = JSON.parse(data);
+        } catch (parseError) {
+            return res.status(500).send('Error parsing JSON file.');
+        }
+
+        messages.push(newMessage);
+
+        fs.writeFile(path.join(__dirname, 'guestbook.json'), JSON.stringify(messages, null, 2), (writeError) => {
+            if (writeError) {
+                return res.status(500).send('Error writing to JSON file.');
+            }
+            res.redirect('/guestbook');
+        });
+    });
+});
+
+// Handle AJAX form submissions
+app.post('/ajaxmessage', (req, res) => {
+    const { username, country, message } = req.body;
+
+    if (!username || !country || !message) {
+        return res.status(400).send('All fields are required.');
+    }
+
+    const newMessage = {
+        username,
+        country,
+        date: new Date().toString(),
         message,
     };
 
@@ -71,7 +102,7 @@ app.post('/newmessage', (req, res) => {
 
         let messages = [];
         try {
-            messages = JSON.parse(data); // Parse existing messages
+            messages = JSON.parse(data);
         } catch (parseError) {
             return res.status(500).send('Error parsing JSON file.');
         }
@@ -84,31 +115,11 @@ app.post('/newmessage', (req, res) => {
             if (writeError) {
                 return res.status(500).send('Error writing to JSON file.');
             }
-            // Redirect to the guestbook after submission
-            res.redirect('/guestbook');
+
+            // Respond with all messages (including the new one)
+            res.json(messages); // Send back all messages to the client
         });
     });
-});
-
-// Handle AJAX form submissions
-app.post('/ajaxmessage', (req, res) => {
-    const { username, country, message } = req.body;
-
-    // Validate the input fields
-    if (!username || !country || !message) {
-        return res.status(400).send('All fields are required.'); // Respond with an error if any field is empty
-    }
-
-    // Create a new message object
-    const newMessage = {
-        username,
-        country,
-        date: new Date().toString(), // Get the current date
-        message,
-    };
-
-    // Respond with the new message as JSON
-    res.json([newMessage]); // Wrap in an array to maintain consistency with your current AJAX handling
 });
 
 // Start the server
